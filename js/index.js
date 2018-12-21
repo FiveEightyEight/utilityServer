@@ -1,5 +1,6 @@
 const app = require('express')();
 const math = require('./math');
+const giphy = require('./giphy');
 const port = 800;
 
 app.get('/', (req, res) => {
@@ -26,7 +27,7 @@ app.get('/math/add', (req, res) => {
     const nan = {};
     let sum = 0;
     let sumString = '';
-     for (let i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
         const currentVal = req.query[keys[i]];
         if (math.coerce(currentVal)) {
             add[keys[i]] = math.coerce(currentVal);
@@ -42,7 +43,7 @@ app.get('/math/add', (req, res) => {
 
         sumString += `${add[keys[i]]}`;
 
-        if ((i+1) !== keys.length) {
+        if ((i + 1) !== keys.length) {
             sumString += ' + ';
         }
     }
@@ -63,7 +64,7 @@ app.get('/math/subtract', (req, res) => {
     const nan = {};
     let difference = 0;
     let differenceString = '';
-     for (let i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
         const currentVal = req.query[keys[i]];
         if (math.coerce(currentVal)) {
             sub[keys[i]] = math.coerce(currentVal);
@@ -79,7 +80,7 @@ app.get('/math/subtract', (req, res) => {
 
         differenceString += `${sub[keys[i]]}`;
 
-        if ((i+1) !== keys.length) {
+        if ((i + 1) !== keys.length) {
             differenceString += ' - ';
         }
     }
@@ -101,7 +102,7 @@ app.get('/math/multiply', (req, res) => {
     const nan = {};
     let product = 1;
     let prodString = '';
-     for (let i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
         const currentVal = req.query[keys[i]];
         if (math.coerce(currentVal)) {
             mul[keys[i]] = math.coerce(currentVal);
@@ -117,7 +118,7 @@ app.get('/math/multiply', (req, res) => {
 
         prodString += `${mul[keys[i]]}`;
 
-        if ((i+1) !== keys.length) {
+        if ((i + 1) !== keys.length) {
             prodString += ' * ';
         }
     }
@@ -138,7 +139,7 @@ app.get('/math/divide', (req, res) => {
     const nan = {};
     let quotient = 1;
     let divString = '';
-     for (let i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
         const currentVal = req.query[keys[i]];
         if (math.coerce(currentVal)) {
             div[keys[i]] = math.coerce(currentVal);
@@ -154,7 +155,7 @@ app.get('/math/divide', (req, res) => {
 
         divString += `${div[keys[i]]}`;
 
-        if ((i+1) !== keys.length) {
+        if ((i + 1) !== keys.length) {
             divString += ' / ';
         }
     }
@@ -167,6 +168,29 @@ app.get('/math/divide', (req, res) => {
     });
 
 });
+
+app.get('/gif', (req, res) => {
+    console.log(`get gif is being called`);
+
+    const search = req.query.search;
+
+    if (search) {
+
+        giphy.getGif(search, cb => {
+            res.json(cb);
+
+        });
+    } else {
+        res.json({
+
+            'message': `cannot search '${search}'`,
+
+        });
+
+    }
+
+});
+
 
 app.listen(port, (e) => {
     console.log(`Listening on port ${port}`)
