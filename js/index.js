@@ -1,7 +1,7 @@
 const app = require('express')();
 const math = require('./math');
 const giphy = require('./giphy');
-const port = 800;
+const port = 3000;
 
 app.get('/', (req, res) => {
     console.log(`get @ '/' is being called`);
@@ -38,22 +38,30 @@ app.get('/math/add', (req, res) => {
 
     keys = Object.keys(add);
 
-    for (let i = 0; i < keys.length; i++) {
-        sum = math.add(add[keys[i]], sum);
+    if (keys.length >= 1) {
 
-        sumString += `${add[keys[i]]}`;
+        for (let i = 0; i < keys.length; i++) {
+            sum = math.add(add[keys[i]], sum);
 
-        if ((i + 1) !== keys.length) {
-            sumString += ' + ';
+            sumString += `${add[keys[i]]}`;
+
+            if ((i + 1) !== keys.length) {
+                sumString += ' + ';
+            }
         }
-    }
 
-    res.json({
-        'Valid Input': add,
-        'Invalid Input': nan,
-        sumString,
-        sum,
-    });
+        res.json({
+            'Valid Input': add,
+            'Invalid Input': nan,
+            sumString,
+            sum,
+        });
+
+    } else {
+        res.json({
+            error: 'You passed a non-number value into the parameters.'
+        });
+    }
 
 });
 
@@ -75,22 +83,30 @@ app.get('/math/subtract', (req, res) => {
 
     keys = Object.keys(sub);
 
-    for (let i = 0; i < keys.length; i++) {
-        difference = math.subtract(sub[keys[i]], difference);
+    if (keys.length >= 1) {
 
-        differenceString += `${sub[keys[i]]}`;
+        for (let i = 0; i < keys.length; i++) {
+            difference = math.subtract(sub[keys[i]], difference);
 
-        if ((i + 1) !== keys.length) {
-            differenceString += ' - ';
+            differenceString += `${sub[keys[i]]}`;
+
+            if ((i + 1) !== keys.length) {
+                differenceString += ' - ';
+            }
         }
-    }
 
-    res.json({
-        'Valid Input': sub,
-        'Invalid Input': nan,
-        differenceString,
-        difference,
-    });
+        res.json({
+            'Valid Input': sub,
+            'Invalid Input': nan,
+            differenceString,
+            difference,
+        });
+
+    } else {
+        res.json({
+            error: 'You passed a non-number value into the parameters.'
+        });
+    }
 
 });
 
@@ -113,22 +129,31 @@ app.get('/math/multiply', (req, res) => {
 
     keys = Object.keys(mul);
 
-    for (let i = 0; i < keys.length; i++) {
-        product = math.multiply(mul[keys[i]], product);
+    if (keys.length >= 1) {
 
-        prodString += `${mul[keys[i]]}`;
+        for (let i = 0; i < keys.length; i++) {
+            product = math.multiply(mul[keys[i]], product);
 
-        if ((i + 1) !== keys.length) {
-            prodString += ' * ';
+            prodString += `${mul[keys[i]]}`;
+
+            if ((i + 1) !== keys.length) {
+                prodString += ' * ';
+            }
         }
+
+        res.json({
+            'Valid Input': mul,
+            'Invalid Input': nan,
+            prodString,
+            product,
+        });
+    } else {
+        res.json({
+            error: 'You passed a non-number value into the parameters.'
+        });
     }
 
-    res.json({
-        'Valid Input': mul,
-        'Invalid Input': nan,
-        prodString,
-        product,
-    });
+
 
 });
 
@@ -139,6 +164,8 @@ app.get('/math/divide', (req, res) => {
     const nan = {};
     let quotient = 1;
     let divString = '';
+    const map = [div, nan, quotient, divString];
+    const json = {};
     for (let i = 0; i < keys.length; i++) {
         const currentVal = req.query[keys[i]];
         if (math.coerce(currentVal)) {
@@ -150,34 +177,60 @@ app.get('/math/divide', (req, res) => {
 
     keys = Object.keys(div);
 
-    for (let i = 0; i < keys.length; i++) {
-        quotient = math.divide(div[keys[i]], quotient);
+    if (keys.length >= 1) {
 
-        divString += `${div[keys[i]]}`;
+        for (let i = 0; i < keys.length; i++) {
+            quotient = math.divide(div[keys[i]], quotient);
 
-        if ((i + 1) !== keys.length) {
-            divString += ' / ';
+            divString += `${div[keys[i]]}`;
+
+            if ((i + 1) !== keys.length) {
+                divString += ' / ';
+            }
         }
-    }
 
-    res.json({
-        'Valid Input': div,
-        'Invalid Input': nan,
-        divString,
-        quotient,
-    });
+
+
+        res.json({
+            'Valid Input': div,
+            'Invalid Input': nan,
+            divString,
+            quotient,
+        });
+
+    } else {
+        res.json({
+            error: 'You passed a non-number value into the parameters.'
+        });
+    }
 
 });
 
 app.get('/gif', (req, res) => {
-    console.log(`get gif is being called`);
+    console.log(`get gif was called`);
 
     const search = req.query.search;
 
     if (search) {
 
         giphy.getGif(search, cb => {
+
+            // data.images.original.url for image
+            // data.title for image
+            //
+
+            // <div class='container'> 
+            //      <div class='row'>
+            //          <div class='col s2'> 
+            //              <div> <img src='data.user.avatar_url'>       
+            //                      <div class='col s10'>
+            //                                 <img src='data.user.banner_url'>
+            //
+
+
             res.json(cb);
+
+
 
         });
     } else {
@@ -190,6 +243,48 @@ app.get('/gif', (req, res) => {
     }
 
 });
+
+
+app.get('/test', (req, res) => {
+
+
+        res.send(`
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Utility Server</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="styles/app.css">
+</head>
+
+<body>
+
+
+
+
+
+
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src='js/index.js'></script>
+</body>
+
+</html>
+
+
+
+
+    
+`)
+
+    }
+
+)
 
 
 app.listen(port, (e) => {
