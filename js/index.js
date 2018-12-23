@@ -38,7 +38,7 @@ app.get('/math/add', (req, res) => {
 
     keys = Object.keys(add);
 
-    if (keys.length >= 1) {
+    if (keys.length >= 2) {
 
         for (let i = 0; i < keys.length; i++) {
             sum = math.add(add[keys[i]], sum);
@@ -83,7 +83,7 @@ app.get('/math/subtract', (req, res) => {
 
     keys = Object.keys(sub);
 
-    if (keys.length >= 1) {
+    if (keys.length >= 2) {
 
         for (let i = 0; i < keys.length; i++) {
             difference = math.subtract(sub[keys[i]], difference);
@@ -129,7 +129,7 @@ app.get('/math/multiply', (req, res) => {
 
     keys = Object.keys(mul);
 
-    if (keys.length >= 1) {
+    if (keys.length >= 2) {
 
         for (let i = 0; i < keys.length; i++) {
             product = math.multiply(mul[keys[i]], product);
@@ -177,7 +177,7 @@ app.get('/math/divide', (req, res) => {
 
     keys = Object.keys(div);
 
-    if (keys.length >= 1) {
+    if (keys.length >= 2) {
 
         for (let i = 0; i < keys.length; i++) {
             quotient = math.divide(div[keys[i]], quotient);
