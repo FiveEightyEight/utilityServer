@@ -209,30 +209,27 @@ app.get('/math/divide', (req, res) => {
 app.get('/gif', (req, res) => {
     console.log(`get gif was called`);
 
-    const search = req.query.search;
+    const {search, num} = req.query;
 
     if (search) {
 
-        giphy.getGif(search, cb => {
+        giphy.getGif(search, num, cb => {
+            const imgUrl = [];
+            if (num >= 2) {
+                for(let i = 0; i < cb.data.length; i++) {
+                    imgUrl.push(cb.data[i].images.original.url);
+                }
+            } else {
+                 imgUrl.push(cb.data[0].images.original.url);
+            }
 
-            // data.images.original.url for image
-            // data.title for image
-            //
-
-            // <div class='container'> 
-            //      <div class='row'>
-            //          <div class='col s2'> 
-            //              <div> <img src='data.user.avatar_url'>       
-            //                      <div class='col s10'>
-            //                                 <img src='data.user.banner_url'>
-            //
-
-
-            res.json(cb);
-
-
+            res.json({
+                imgUrl
+            });
 
         });
+
+
     } else {
         res.json({
 

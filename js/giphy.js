@@ -17,9 +17,9 @@ const GETRequest = (url, cb) => {
 
 };
 
-const getGif = (search, cb) => {
+const getGif = (search, num = 1, cb) => {
 
-    const url = `https://api.giphy.com/v1/gifs/search?api_key=${api_key}&q=${search}&limit=1`;
+    const url = `https://api.giphy.com/v1/gifs/search?api_key=${api_key}&q=${search}&limit=${num}`;
 
     GETRequest(url, data => {
         cb(data)

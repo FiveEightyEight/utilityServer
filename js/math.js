@@ -11,7 +11,7 @@ math.multiply = (num1, num2) => num1*num2;
 
 math.coerce = (str) => {
     const num = parseInt(str, 10);
-    if(!isNaN(num)) {
+    if(!isNaN(num)) {  // "1" ==>  1       //   'pie'  ==> NaN    return isNaN(num) ? false : num;
         return num;
     }
     return false;
