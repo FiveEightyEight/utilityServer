@@ -262,16 +262,20 @@ app.get('/math/divide', (req, res) => {
 app.get('/gif', (req, res) => {
     console.log(`get gif was called`);
 
-    const {
+    let {
         search,
-        num
+        limit
     } = req.query;
+
+    if (limit === undefined) {
+        limit = 25;
+    }
 
     if (search) {
 
-        giphy.getGif(search, num, cb => {
+        giphy.getGif(search, limit, cb => {
             const imgUrl = [];
-            if (num >= 2) {
+            if (limit >= 2) {
                 for (let i = 0; i < cb.data.length; i++) {
                     imgUrl.push(cb.data[i].images.original.url);
                 }
@@ -288,7 +292,7 @@ app.get('/gif', (req, res) => {
 
         res.json({
 
-            'message': `enter a search argument using the parameter (search=) and the quantity you want returned (num=)'`,
+            'message': `enter a search argument using the parameter (search=) and the quantity you want returned (limit=)'`,
 
         });
     } else {
